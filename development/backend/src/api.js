@@ -737,7 +737,7 @@ const mineActive = async (req, res) => {
   const searchThumbQs =
     'select item_id from record_item_file where linked_record_id = ? order by item_id asc limit 1';
   const countQs = 'select count(*) from record_comment where linked_record_id = ?';
-  const searchLastQs = 'select access_time from record_last_access where user_id = ? and record_id = ?';
+  const searchLastQs = 'select * from record_last_access where user_id = ? and record_id = ?';
 
   for (let i = 0; i < recordResult.length; i++) {
     const resObj = {
