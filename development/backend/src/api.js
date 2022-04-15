@@ -367,12 +367,12 @@ const tomeActive = async (req, res) => {
     items[i] = resObj;
   }
 
-  // const [recordCountResult] = await pool.query(recordCountQs, param);
-  // if (recordCountResult.length === 1) {
-  //   count = recordCountResult[0]['count(record_id)'];
-  // }
+  const [recordCountResult] = await pool.query(recordCountQs, param);
+  if (recordCountResult.length === 1) {
+    count = recordCountResult[0]['count(record_id)'];
+  }
 
-  res.send({ count: i, items: items });
+  res.send({ count: count, items: items });
 };
 
 // GET /record-views/allActive
