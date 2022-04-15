@@ -262,7 +262,7 @@ const tomeActive = async (req, res) => {
      from record where status = "open" and (category_id, application_group) in (';
   //このrecordCountQs、似たようなquery2回呼ぶことになるから改善できそうな気がしている。
   let recordCountQs = 
-    'select count(record_id) from record where status = "open" and (category_id, application_group) in (';
+    'select count(*) from record where status = "open" and (category_id, application_group) in (';
   const param = [];
 
   for (let i = 0; i < targetCategoryAppGroupList.length; i++) {
@@ -293,7 +293,7 @@ const tomeActive = async (req, res) => {
   const searchGroupQs = 'select name from group_info where group_id = ?';
   const searchThumbQs =
     'select item_id from record_item_file where linked_record_id = ? order by item_id asc limit 1';
-  const countQs = 'select count(comment_id) from record_comment where linked_record_id = ?';
+  const countQs = 'select count(*) from record_comment where linked_record_id = ?';
   const searchLastQs = 'select access_time from record_last_access where user_id = ? and record_id = ?';
 
   for (let i = 0; i < recordResult.length; i++) {
@@ -339,7 +339,7 @@ const tomeActive = async (req, res) => {
 
     const [countResult] = await pool.query(countQs, [recordId]);
     if (countResult.length === 1) {
-      commentCount = countResult[0]['count(comment_id)'];
+      commentCount = countResult[0]['count(*)'];
     }
 
     const [lastResult] = await pool.query(searchLastQs, [user.user_id, recordId]);
@@ -369,7 +369,7 @@ const tomeActive = async (req, res) => {
 
   const [recordCountResult] = await pool.query(recordCountQs, param);
   if (recordCountResult.length === 1) {
-    count = recordCountResult[0]['count(record_id)'];
+    count = recordCountResult[0]['count(*)'];
   }
 
   res.send({ count: count, items: items });
