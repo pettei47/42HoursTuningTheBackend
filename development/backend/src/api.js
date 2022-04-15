@@ -724,7 +724,7 @@ const mineActive = async (req, res) => {
     limit = 10;
   }
 
-  const searchRecordQs = `select record_id, created_by, application_group, updated_at from record where created_by = ? and status = "open" order by updated_at desc, record_id asc limit ? offset ?`;
+  const searchRecordQs = `select record_id, created_by, application_group, updated_at, title from record where created_by = ? and status = "open" order by updated_at desc, record_id asc limit ? offset ?`;
 
   const [recordResult] = await pool.query(searchRecordQs, [user.user_id, limit, offset]);
   mylog(recordResult);
