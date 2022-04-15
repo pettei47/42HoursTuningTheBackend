@@ -143,10 +143,10 @@ const getRecord = async (req, res) => {
     files: [],
   };
 
-  const searchPrimaryGroupQs = `select * from group_member where user_id = ? and is_primary = true`;
-  const searchUserQs = `select * from user where user_id = ?`;
-  const searchGroupQs = `select * from group_info where group_id = ?`;
-  const searchCategoryQs = `select * from category where category_id = ?`;
+  const searchPrimaryGroupQs = `select group_id from group_member where user_id = ? and is_primary = true`;
+  const searchUserQs = `select name from user where user_id = ?`;
+  const searchGroupQs = `select name from group_info where group_id = ?`;
+  const searchCategoryQs = `select name from category where category_id = ?`;
 
   const line = recordResult[0];
 
