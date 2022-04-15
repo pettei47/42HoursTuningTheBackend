@@ -257,7 +257,8 @@ const tomeActive = async (req, res) => {
   }
 
   let searchRecordQs =
-    'select record_id,title,application_group,created_by,created_at,updated_at \
+    // 'select record_id,title,application_group,created_by,created_at,updated_at \
+    'select * \
      from record where status = "open" and (category_id, application_group) in (';
   //このrecordCountQs、似たようなquery2回呼ぶことになるから改善できそうな気がしている。
   let recordCountQs = 
@@ -310,12 +311,11 @@ const tomeActive = async (req, res) => {
       updatedAt: '',
     };
 
-    const line = recordResult[i];
-    mylog(line);
-    const recordId = recordResult[i].record_id;
-    const createdBy = line.created_by;
-    const applicationGroup = line.application_group;
-    const updatedAt = line.updated_at;
+    mylog(recordResult[i]);
+    // const recordId = recordResult[i].record_id;
+    // const createdBy = recordResult[i].created_by;
+    // const applicationGroup = recordResult[i].application_group;
+    // const updatedAt = recordResult[i].updated_at;
     let createdByName = null;
     let applicationGroupName = null;
     let thumbNailItemId = null;
@@ -352,17 +352,17 @@ const tomeActive = async (req, res) => {
       }
     }
 
-    resObj.recordId = recordId;
-    resObj.title = line.title;
-    resObj.applicationGroup = applicationGroup;
+    resObj.recordId = recordResult[i].record_id;
+    resObj.title = recordResult[i].title;
+    resObj.applicationGroup = recordResult[i].application_group;
     resObj.applicationGroupName = applicationGroupName;
-    resObj.createdBy = createdBy;
+    resObj.createdBy = recordResult[i].created_by;
     resObj.createdByName = createdByName;
-    resObj.createAt = line.created_at;
+    resObj.createAt = recordResult[i].created_at;
     resObj.commentCount = commentCount;
     resObj.isUnConfirmed = isUnConfirmed;
     resObj.thumbNailItemId = thumbNailItemId;
-    resObj.updatedAt = updatedAt;
+    resObj.updatedAt = recordResult[i].updated_at;
 
     items[i] = resObj;
   }
