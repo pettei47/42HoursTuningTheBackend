@@ -303,12 +303,11 @@ const tomeActive = async (req, res) => {
       updatedAt: '',
     };
 
-    const line = recordResult[i];
-    mylog(line);
-    const recordId = recordResult[i].record_id;
-    const createdBy = line.created_by;
-    const applicationGroup = line.application_group;
-    const updatedAt = line.updated_at;
+    mylog(recordResult[i]);
+    // const recordId = recordResult[i].record_id;
+    // const createdBy = line.created_by;
+    // const applicationGroup = line.application_group;
+    // const updatedAt = line.updated_at;
     let createdByName = null;
     let applicationGroupName = null;
     let thumbNailItemId = null;
@@ -346,17 +345,17 @@ const tomeActive = async (req, res) => {
       }
     }
 
-    resObj.recordId = recordId;
-    resObj.title = line.title;
+    resObj.recordId = recordResult[i].record_id;
+    resObj.title = recordResult[i].title;
     resObj.applicationGroup = applicationGroup;
     resObj.applicationGroupName = applicationGroupName;
-    resObj.createdBy = createdBy;
+    resObj.createdBy = recordResult[i].createdBy;
     resObj.createdByName = createdByName;
-    resObj.createAt = line.created_at;
+    resObj.createAt = recordResult[i].created_at;
     resObj.commentCount = commentCount;
     resObj.isUnConfirmed = isUnConfirmed;
     resObj.thumbNailItemId = thumbNailItemId;
-    resObj.updatedAt = updatedAt;
+    resObj.updatedAt = recordResult[i].updatedAt;
 
     items[i] = resObj;
   }
@@ -387,8 +386,8 @@ const allActive = async (req, res) => {
   const [recordResult] = await pool.query(searchRecordQs, [limit, offset]);
   mylog(recordResult);
 
-  const items = Array(recordResult.length);
-  let count = 0;
+  const count = recordResult.length;
+  const items = Array(count);
 
   const searchUserQs = 'select * from user where user_id = ?';
   const searchGroupQs = 'select * from group_info where group_id = ?';
@@ -742,16 +741,16 @@ const getComments = async (req, res) => {
 
   const recordId = req.params.recordId;
 
-  const commentQs = `select * from record_comment where linked_record_id = ? order by created_at desc`;
+  const commentQs = `select comment_id, value, created_by, created_at from record_comment where linked_record_id = ? order by created_at desc`;
 
   const [commentResult] = await pool.query(commentQs, [`${recordId}`]);
   mylog(commentResult);
 
   const commentList = Array(commentResult.length);
 
-  const searchPrimaryGroupQs = `select * from group_member where user_id = ? and is_primary = true`;
-  const searchUserQs = `select * from user where user_id = ?`;
-  const searchGroupQs = `select * from group_info where group_id = ?`;
+  const searchPrimaryGroupQs = `select group_id from group_member where user_id = ? and is_primary = true`;
+  const searchUserQs = `select name from user where user_id = ?`;
+  const searchGroupQs = `select name from group_info where group_id = ?`;
   for (let i = 0; i < commentResult.length; i++) {
     let commentInfo = {
       commentId: '',
