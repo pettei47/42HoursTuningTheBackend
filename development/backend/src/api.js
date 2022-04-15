@@ -386,16 +386,15 @@ const allActive = async (req, res) => {
   const [recordResult] = await pool.query(searchRecordQs, [limit, offset]);
   mylog(recordResult);
 
-  // const count = recordResult.length;
-  const items = Array(count);
+  const items = Array(recordResult.length);
   let count = 0;
 
-  const searchUserQs = 'select name from user where user_id = ?';
-  const searchGroupQs = 'select name from group_info where group_id = ?';
+  const searchUserQs = 'select * from user where user_id = ?';
+  const searchGroupQs = 'select * from group_info where group_id = ?';
   const searchThumbQs =
-    'select item_id from record_item_file where linked_record_id = ? order by item_id asc limit 1';
+    'select * from record_item_file where linked_record_id = ? order by item_id asc limit 1';
   const countQs = 'select count(*) from record_comment where linked_record_id = ?';
-  const searchLastQs = 'select access_time from record_last_access where user_id = ? and record_id = ?';
+  const searchLastQs = 'select * from record_last_access where user_id = ? and record_id = ?';
 
   for (let i = 0; i < recordResult.length; i++) {
     const resObj = {
@@ -478,6 +477,7 @@ const allActive = async (req, res) => {
 
   res.send({ count: count, items: items });
 };
+
 /*const allActive = async (req, res) => {
   let user = await getLinkedUser(req.headers);
 
