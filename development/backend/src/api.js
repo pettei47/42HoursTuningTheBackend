@@ -49,7 +49,7 @@ const filePath = 'file/';
 // POST /records
 // 申請情報登録
 const postRecords = async (req, res) => {
-  let user = await getLinkedUser(req.headers);
+  let user = getLinkedUser(req.headers);
 
   if (!user) {
     res.status(401).send();
@@ -108,7 +108,7 @@ const postRecords = async (req, res) => {
 // GET /records/{recordId}
 // 文書詳細取得
 const getRecord = async (req, res) => {
-  let user = await getLinkedUser(req.headers);
+  let user = getLinkedUser(req.headers);
 
   if (!user) {
     res.status(401).send();
@@ -218,7 +218,7 @@ const getRecord = async (req, res) => {
 // GET /record-views/tomeActive
 // 自分宛一覧
 const tomeActive = async (req, res) => {
-  let user = await getLinkedUser(req.headers);
+  let user = getLinkedUser(req.headers);
 
   if (!user) {
     res.status(401).send();
@@ -376,7 +376,7 @@ const tomeActive = async (req, res) => {
 // GET /record-views/allActive
 // 全件一覧
 const allActive = async (req, res) => {
-  let user = await getLinkedUser(req.headers);
+  let user = getLinkedUser(req.headers);
 
   if (!user) {
     res.status(401).send();
@@ -491,7 +491,7 @@ const allActive = async (req, res) => {
 // GET /record-views/allClosed
 // クローズ一覧
 const allClosed = async (req, res) => {
-  let user = await getLinkedUser(req.headers);
+  let user = getLinkedUser(req.headers);
 
   if (!user) {
     res.status(401).send();
@@ -606,7 +606,7 @@ const allClosed = async (req, res) => {
 // GET /record-views/mineActive
 // 自分が申請一覧
 const mineActive = async (req, res) => {
-  let user = await getLinkedUser(req.headers);
+  let user = getLinkedUser(req.headers);
 
   if (!user) {
     res.status(401).send();
@@ -721,7 +721,7 @@ const mineActive = async (req, res) => {
 // PUT records/{recordId}
 // 申請更新
 const updateRecord = async (req, res) => {
-  let user = await getLinkedUser(req.headers);
+  let user = getLinkedUser(req.headers);
 
   if (!user) {
     res.status(401).send();
@@ -742,7 +742,7 @@ const updateRecord = async (req, res) => {
 // GET records/{recordId}/comments
 // コメントの取得
 const getComments = async (req, res) => {
-  let user = await getLinkedUser(req.headers);
+  let user = getLinkedUser(req.headers);
 
   if (!user) {
     res.status(401).send();
@@ -805,7 +805,7 @@ const getComments = async (req, res) => {
 // POST records/{recordId}/comments
 // コメントの投稿
 const postComments = async (req, res) => {
-  let user = await getLinkedUser(req.headers);
+  let user = getLinkedUser(req.headers);
 
   if (!user) {
     res.status(401).send();
@@ -835,7 +835,7 @@ const postComments = async (req, res) => {
 // GET categories/
 // カテゴリーの取得
 const getCategories = async (req, res) => {
-  let user = await getLinkedUser(req.headers);
+  let user = getLinkedUser(req.headers);
 
   if (!user) {
     res.status(401).send();
@@ -860,7 +860,7 @@ const getCategories = async (req, res) => {
 // POST files/
 // ファイルのアップロード
 const postFiles = async (req, res) => {
-  let user = await getLinkedUser(req.headers);
+  let user = getLinkedUser(req.headers);
 
   if (!user) {
     res.status(401).send();
@@ -905,7 +905,7 @@ const postFiles = async (req, res) => {
 // GET records/{recordId}/files/{itemId}
 // 添付ファイルのダウンロード
 const getRecordItemFile = async (req, res) => {
-  let user = await getLinkedUser(req.headers);
+  let user = getLinkedUser(req.headers);
 
   if (!user) {
     res.status(401).send();
@@ -947,7 +947,7 @@ const getRecordItemFile = async (req, res) => {
 // GET records/{recordId}/files/{itemId}/thumbnail
 // 添付ファイルのサムネイルダウンロード
 const getRecordItemFileThumbnail = async (req, res) => {
-  let user = await getLinkedUser(req.headers);
+  let user = getLinkedUser(req.headers);
 
   if (!user) {
     res.status(401).send();
