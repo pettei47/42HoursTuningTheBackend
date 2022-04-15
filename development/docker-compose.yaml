@@ -34,4 +34,4 @@ services:
         MYSQL_USER: "backend"
         MYSQL_PASSWORD : "backend"
       volumes:
-        - ../volume/mysql:/var/lib/mysql
+        - ../volume/mysql:/var/lib/mysql:delegated
