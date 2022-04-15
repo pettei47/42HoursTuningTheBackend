@@ -257,7 +257,8 @@ const tomeActive = async (req, res) => {
   }
 
   let searchRecordQs =
-    'select record_id from record where status = "open" and (category_id, application_group) in (';
+    'select record_id,title,application_group,created_by,created_at,updated_at \
+     from record where status = "open" and (category_id, application_group) in (';
   //このrecordCountQs、似たようなquery2回呼ぶことになるから改善できそうな気がしている。
   let recordCountQs = 
     'select count(record_id) from record where status = "open" and (category_id, application_group) in (';
@@ -366,12 +367,12 @@ const tomeActive = async (req, res) => {
     items[i] = resObj;
   }
 
-  const [recordCountResult] = await pool.query(recordCountQs, param);
-  if (recordCountResult.length === 1) {
-    count = recordCountResult[0]['count(record_id)'];
-  }
+  // const [recordCountResult] = await pool.query(recordCountQs, param);
+  // if (recordCountResult.length === 1) {
+  //   count = recordCountResult[0]['count(record_id)'];
+  // }
 
-  res.send({ count: count, items: items });
+  res.send({ count: i, items: items });
 };
 
 // GET /record-views/allActive
