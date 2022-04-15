@@ -20,7 +20,7 @@ CREATE TABLE `group_member` (
 );
 
 CREATE TABLE `record` (
-    `record_id` VARCHAR(64) NOT NULL,
+    `record_id` bigint NOT NULL,
     `status` VARCHAR(16) NOT NULL,
     `title` VARCHAR(128) NOT NULL,
     `detail` VARCHAR(512) NOT NULL,
@@ -34,15 +34,15 @@ CREATE TABLE `record` (
 
 CREATE TABLE `record_item_file` (
     `item_id` bigint NOT NULL AUTO_INCREMENT,
-    `linked_record_id` VARCHAR(64) NOT NULL,
-    `linked_file_id` VARCHAR(64) NOT NULL,
-    `linked_thumbnail_file_id` VARCHAR(64) NOT NULL,
+    `linked_record_id` bigint NOT NULL,
+    `linked_file_id` bigint NOT NULL,
+    `linked_thumbnail_file_id` bigint NOT NULL,
     `created_at` TIMESTAMP NOT NULL,
     PRIMARY KEY (`item_id`)
 );
 
 CREATE TABLE `record_last_access` (
-    `record_id` VARCHAR(64) NOT NULL,
+    `record_id` bigint NOT NULL,
     `user_id` bigint NOT NULL,
     `access_time` TIMESTAMP NOT NULL,
     PRIMARY KEY (`record_id`, `user_id`)
@@ -50,7 +50,7 @@ CREATE TABLE `record_last_access` (
 
 CREATE TABLE `record_comment` (
     `comment_id` bigint NOT NULL AUTO_INCREMENT,
-    `linked_record_id` VARCHAR(64) NOT NULL,
+    `linked_record_id` bigint NOT NULL,
     `value` VARCHAR(512) NOT NULL,
     `created_by` bigint NOT NULL,
     `created_at` TIMESTAMP NOT NULL,
@@ -79,7 +79,7 @@ CREATE TABLE `session` (
 );
 
 CREATE TABLE `file` (
-    `file_id` VARCHAR(64) NOT NULL,
+    `file_id` bigint NOT NULL,
     `path` VARCHAR(1024) NOT NULL,
     `name` VARCHAR(256) NOT NULL,
     PRIMARY KEY (`file_id`)
