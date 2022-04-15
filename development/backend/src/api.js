@@ -258,23 +258,23 @@ const tomeActive = async (req, res) => {
 
   let searchRecordQs =
     'select * from record where status = "open" and (category_id, application_group) in (';
-  let recordCountQs =
-    'select count(*) from record where status = "open" and (category_id, application_group) in (';
+  // let recordCountQs =
+  //   'select count(*) from record where status = "open" and (category_id, application_group) in (';
   const param = [];
 
   for (let i = 0; i < targetCategoryAppGroupList.length; i++) {
     if (i !== 0) {
       searchRecordQs += ', (?, ?)';
-      recordCountQs += ', (?, ?)';
+    //  recordCountQs += ', (?, ?)';
     } else {
       searchRecordQs += ' (?, ?)';
-      recordCountQs += ' (?, ?)';
+    //  recordCountQs += ' (?, ?)';
     }
     param.push(targetCategoryAppGroupList[i].categoryId);
     param.push(targetCategoryAppGroupList[i].applicationGroup);
   }
   searchRecordQs += ' ) order by updated_at desc, record_id  limit ? offset ?';
-  recordCountQs += ' )';
+  // recordCountQs += ' )';
   param.push(limit);
   param.push(offset);
   mylog(searchRecordQs);
@@ -284,7 +284,7 @@ const tomeActive = async (req, res) => {
   mylog(recordResult);
 
   const items = Array(recordResult.length);
-  let count = 0;
+  // let count = 0;
 
   const searchUserQs = 'select * from user where user_id = ?';
   const searchGroupQs = 'select * from group_info where group_id = ?';
@@ -293,7 +293,8 @@ const tomeActive = async (req, res) => {
   const countQs = 'select count(*) from record_comment where linked_record_id = ?';
   const searchLastQs = 'select * from record_last_access where user_id = ? and record_id = ?';
 
-  for (let i = 0; i < recordResult.length; i++) {
+  const count = recordResult.length;
+  for (let i = 0; i < count; i++) {
     const resObj = {
       recordId: null,
       title: '',
@@ -365,10 +366,10 @@ const tomeActive = async (req, res) => {
     items[i] = resObj;
   }
 
-  const [recordCountResult] = await pool.query(recordCountQs, param);
-  if (recordCountResult.length === 1) {
-    count = recordCountResult[0]['count(*)'];
-  }
+  // const [recordCountResult] = await pool.query(recordCountQs, param);
+  // if (recordCountResult.length === 1) {
+  //   count = recordCountResult[0]['count(*)'];
+  // }
 
   res.send({ count: count, items: items });
 };
