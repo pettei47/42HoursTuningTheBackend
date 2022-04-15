@@ -233,12 +233,12 @@ const tomeActive = async (req, res) => {
     limit = 10;
   }
 
-  const searchMyGroupQs = `select * from group_member where user_id = ?`;
+  const searchMyGroupQs = `select group_id from group_member where user_id = ?`;
   const [myGroupResult] = await pool.query(searchMyGroupQs, [user.user_id]);
   mylog(myGroupResult);
 
   const targetCategoryAppGroupList = [];
-  const searchTargetQs = `select * from category_group where group_id = ?`;
+  const searchTargetQs = `select category_id,application_group from category_group where group_id = ?`;
 
   for (let i = 0; i < myGroupResult.length; i++) {
     const groupId = myGroupResult[i].group_id;
@@ -257,9 +257,10 @@ const tomeActive = async (req, res) => {
   }
 
   let searchRecordQs =
-    'select * from record where status = "open" and (category_id, application_group) in (';
-  let recordCountQs =
-    'select count(*) from record where status = "open" and (category_id, application_group) in (';
+    'select record_id from record where status = "open" and (category_id, application_group) in (';
+  //このrecordCountQs、似たようなquery2回呼ぶことになるから改善できそうな気がしている。
+  let recordCountQs = 
+    'select count(record_id) from record where status = "open" and (category_id, application_group) in (';
   const param = [];
 
   for (let i = 0; i < targetCategoryAppGroupList.length; i++) {
@@ -286,12 +287,12 @@ const tomeActive = async (req, res) => {
   const items = Array(recordResult.length);
   let count = 0;
 
-  const searchUserQs = 'select * from user where user_id = ?';
-  const searchGroupQs = 'select * from group_info where group_id = ?';
+  const searchUserQs = 'select name from user where user_id = ?';
+  const searchGroupQs = 'select name from group_info where group_id = ?';
   const searchThumbQs =
-    'select * from record_item_file where linked_record_id = ? order by item_id asc limit 1';
-  const countQs = 'select count(*) from record_comment where linked_record_id = ?';
-  const searchLastQs = 'select * from record_last_access where user_id = ? and record_id = ?';
+    'select item_id from record_item_file where linked_record_id = ? order by item_id asc limit 1';
+  const countQs = 'select count(comment_id) from record_comment where linked_record_id = ?';
+  const searchLastQs = 'select access_time from record_last_access where user_id = ? and record_id = ?';
 
   for (let i = 0; i < recordResult.length; i++) {
     const resObj = {
@@ -337,7 +338,7 @@ const tomeActive = async (req, res) => {
 
     const [countResult] = await pool.query(countQs, [recordId]);
     if (countResult.length === 1) {
-      commentCount = countResult[0]['count(*)'];
+      commentCount = countResult[0]['count(comment_id)'];
     }
 
     const [lastResult] = await pool.query(searchLastQs, [user.user_id, recordId]);
@@ -367,7 +368,7 @@ const tomeActive = async (req, res) => {
 
   const [recordCountResult] = await pool.query(recordCountQs, param);
   if (recordCountResult.length === 1) {
-    count = recordCountResult[0]['count(*)'];
+    count = recordCountResult[0]['count(record_id)'];
   }
 
   res.send({ count: count, items: items });
