@@ -81,8 +81,8 @@ const postRecords = async (req, res) => {
 
   await pool.query(
     `insert into record
-    (record_id, status,  title, detail, category_id, application_group, created_by, created_at, updated_at)
-    values (?, "open", ?, ?, ?, ?, ?, now(), now())`,
+    (record_id, status, bool_status,  title, detail, category_id, application_group, created_by, created_at, updated_at)
+    values (?, "open", true, ?, ?, ?, ?, ?, now(), now())`,
     [
       `${newId}`,
       `${body.title}`,
