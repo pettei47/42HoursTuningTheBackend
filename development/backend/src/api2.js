@@ -88,9 +88,9 @@ const tomeActive = async (req, res) => {
   }
 
   let searchRecordQs =
-    'select * from record where status = "open" and (category_id, application_group) in (';
+    'select * from record where (category_id, application_group) in (';
   let recordCountQs =
-    'select count(*) from record where status = "open" and (category_id, application_group) in (';
+    'select count(*) from record where (category_id, application_group) in (';
   const param = [];
 
   for (let i = 0; i < targetCategoryAppGroupList.length; i++) {
@@ -104,8 +104,8 @@ const tomeActive = async (req, res) => {
     param.push(targetCategoryAppGroupList[i].categoryId);
     param.push(targetCategoryAppGroupList[i].applicationGroup);
   }
-  searchRecordQs += ' ) order by updated_at desc, record_id  limit ? offset ?';
-  recordCountQs += ' )';
+  searchRecordQs += ' ) and status = "open" order by updated_at desc, record_id  limit ? offset ?';
+  recordCountQs += ' ) and status = "open"';
   param.push(limit);
   param.push(offset);
   mylog(searchRecordQs);
