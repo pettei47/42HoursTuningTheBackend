@@ -752,7 +752,7 @@ const getComments = async (req, res) => {
   const recordId = req.params.recordId;
 
   //const commentQs = `select comment_id, value, created_at, created_by from record_comment where linked_record_id = ? order by created_at desc`;
-  const conbinedQs = `select record_comment.comment_id as comment_id,
+  const combinedQs = `select record_comment.comment_id as comment_id,
   record_comment.value as value,
   record_comment.created_at as created_at,
   record_comment.created_by as user_id,
