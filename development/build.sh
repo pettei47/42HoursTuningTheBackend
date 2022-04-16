@@ -8,8 +8,9 @@
 # (cd ./frontend && npm run build)
 
 
-if [ $1 -eq "test" ]; then
-    test="docker-compose-test.yaml"
+if [ "$1" != "" ]; then
+    test="-f docker-compose-test.yaml"
+	echo "test mode start"
 else
     test=""
 fi
