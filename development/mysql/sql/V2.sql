@@ -8,6 +8,7 @@ ALTER TABLE group_member ADD INDEX group_member_index2(is_primary);
 ALTER TABLE record ADD INDEX record_index1(created_by);
 ALTER TABLE record ADD INDEX record_index2(status);
 ALTER TABLE record ADD INDEX record_index3(record_id);
+ALTER TABLE record ADD INDEX record_index4(bool_status);
 ALTER TABLE record_comment ADD INDEX record_comment_index(linked_record_id);
 ALTER TABLE record_item_file ADD INDEX record_item_file_index(linked_record_id);
 ALTER TABLE record_last_access ADD INDEX record_last_access_index1(record_id);
