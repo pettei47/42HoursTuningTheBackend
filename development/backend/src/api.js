@@ -764,7 +764,7 @@ const getComments = async (req, res) => {
   left join user on group_member.user_id = user.user_id
   left join group_info on group_member.group_id = group_info.group_id
   where linked_record_id = ? order by created_at desc`;
-  const [commentResult] = await pool.query(combinedQs, [`${recordId}`]);
+  const [commentResult] = await pool.query(combinedQs, [recordId]);
   mylog(commentResult);
 
   const commentList = Array(commentResult.length);
