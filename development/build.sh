@@ -9,12 +9,14 @@
 
 
 if [ "$1" != "" ]; then
-    test="-f docker-compose-test.yaml"
-	echo "test mode start"
+    test="docker-compose-test.yaml"
+	echo "slow_query_log mode start"
+	docker-compose -f $test down --rmi all
+	docker-compose -f $test build --no-cache
+	docker-compose -f $test up -d
 else
-    test=""
+	echo "normal test mode start"
+	docker-compose down --rmi all
+	docker-compose build --no-cache
+	docker-compose up -d
 fi
-
-docker-compose $test down --rmi all
-docker-compose $test build --no-cache
-docker-compose $test up -d
