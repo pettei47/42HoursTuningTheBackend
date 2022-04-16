@@ -22,6 +22,7 @@ CREATE TABLE `group_member` (
 CREATE TABLE `record` (
     `record_id` int NOT NULL,
     `status` VARCHAR(16) NOT NULL,
+    `bool_status` BOOLEAN NOT NULL DEFAULT TRUE,
     `title` VARCHAR(128) NOT NULL,
     `detail` VARCHAR(512) NOT NULL,
     `category_id` int NOT NULL,
