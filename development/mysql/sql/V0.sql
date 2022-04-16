@@ -78,6 +78,8 @@ CREATE TABLE `session` (
     PRIMARY KEY (`session_id`)
 );
 
+ALTER TABLE session ADD INDEX session_index(value);
+
 CREATE TABLE `file` (
     `file_id` int NOT NULL,
     `path` VARCHAR(1024) NOT NULL,
