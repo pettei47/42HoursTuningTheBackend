@@ -755,14 +755,14 @@ const getComments = async (req, res) => {
   const conbinedQs = `select record_comment.comment_id as comment_id,
   record_comment.value as value,
   record_comment.created_at as created_at,
-  record_comment.created_by as user_id
-  group_member.gropu_id as gropu_id
-  user.name as user_name
-  group_indo.name as group_name
+  record_comment.created_by as user_id,
+  group_member.group_id as group_id,
+  user.name as user_name,
+  group_info.name as group_name
   from record_comment
   left join group_member on group_member.user_id = record_comment.created_by and is_primary = true
   left join user on user.user_id = group_member.user_id
-  left join group_info on gropu_info.group_id = group_member.group_id
+  left join group_info on group_info.group_id = group_member.group_id
   where linked_record_id = ? order by created_at desc`;
   const [commentResult] = await pool.query(combinedQs, [`${recordId}`]);
   mylog(commentResult);
