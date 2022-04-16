@@ -30,7 +30,9 @@ CREATE TABLE `record` (
     `created_at` TIMESTAMP NOT NULL,
     `updated_at` TIMESTAMP NOT NULL,
     PRIMARY KEY (`record_id`)
-);
+)
+PARTITION BY HASH(status)
+PARTITIONS 3;
 
 CREATE TABLE `record_item_file` (
     `item_id` int NOT NULL AUTO_INCREMENT,
