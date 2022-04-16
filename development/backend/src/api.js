@@ -630,7 +630,7 @@ const mineActive = async (req, res) => {
   record_item_file.item_id as item_id,
   record_last_access.access_time as access_time
   from record 
-  left join user on record.created_by = user.user_is
+  left join user on record.created_by = user.user_id
   left join record_item_file on record.record_id = record_item_file.linked_record_id order by item_id asc limit 1
   left join record_comment on record.record_id = record_comment.linked_record_id
   left join record_last_access on record.record_id = record_last_access.record_id and user.user_id = record_last_access.user_id
