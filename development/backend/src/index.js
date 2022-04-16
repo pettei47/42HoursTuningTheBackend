@@ -4,6 +4,7 @@ const app = express();
 app.use(express.json({limit: '10mb'}))
 
 const api = require("./api");
+const api2 = require("./api2")
 
 app.get('/api/hello', (req, res) => {
   console.log('requested');
@@ -30,7 +31,7 @@ app.get('/api/client/records/:recordId', async (req, res, next) => {
 
 app.get('/api/client/record-views/tomeActive', async (req, res, next) => {
   try {
-    await api.tomeActive(req, res);
+    await api2.tomeActive(req, res);
   } catch(e) {
     console.log(e);
     next(new Error("Unexpect"));
@@ -39,7 +40,7 @@ app.get('/api/client/record-views/tomeActive', async (req, res, next) => {
 
 app.get('/api/client/record-views/allActive', async (req, res, next) => {
   try {
-    await api.allActive(req, res);
+    await api2.allActive(req, res);
   } catch(e) {
     console.log(e);
     next(new Error("Unexpect"));
@@ -48,7 +49,7 @@ app.get('/api/client/record-views/allActive', async (req, res, next) => {
 
 app.get('/api/client/record-views/allClosed', async (req, res, next) => {
   try {
-    await api.allClosed(req, res);
+    await api2.allClosed(req, res);
   } catch(e) {
     console.log(e);
     next(new Error("Unexpect"));
@@ -57,7 +58,7 @@ app.get('/api/client/record-views/allClosed', async (req, res, next) => {
 
 app.get('/api/client/record-views/mineActive', async (req, res, next) => {
   try {
-    await api.mineActive(req, res);
+    await api2.mineActive(req, res);
   } catch(e) {
     console.log(e);
     next(new Error("Unexpect"));
