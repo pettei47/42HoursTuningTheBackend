@@ -81,8 +81,8 @@ const postRecords = async (req, res) => {
 
   await pool.query(
     `insert into record
-    (record_id, status, bool_status,  title, detail, category_id, application_group, created_by, created_at, updated_at)
-    values (?, "open", true, ?, ?, ?, ?, ?, now(), now())`,
+    (record_id, status, title, detail, category_id, application_group, created_by, created_at, updated_at)
+    values (?, "open", ?, ?, ?, ?, ?, now(), now())`,
     [
       `${newId}`,
       `${body.title}`,
@@ -130,7 +130,6 @@ const getRecord = async (req, res) => {
   let recordInfo = {
     recordId: '',
     status: '',
-    bool_status: true,
     title: '',
     detail: '',
     categoryId: null,
@@ -178,7 +177,6 @@ const getRecord = async (req, res) => {
 
   recordInfo.recordId = line.record_id;
   recordInfo.status = line.status;
-  recordInfo.bool_status = line.bool_status;
   recordInfo.title = line.title;
   recordInfo.detail = line.detail;
   recordInfo.categoryId = line.category_id;
@@ -259,9 +257,9 @@ const tomeActive = async (req, res) => {
   }
 
   let searchRecordQs =
-    'select * from record where bool_status = true and (category_id, application_group) in (';
+    'select * from record where status = "open" and (category_id, application_group) in (';
   let recordCountQs =
-    'select count(*) from record where bool_status = true and (category_id, application_group) in (';
+    'select count(*) from record where status = "open" and (category_id, application_group) in (';
   const param = [];
 
   for (let i = 0; i < targetCategoryAppGroupList.length; i++) {
@@ -393,7 +391,7 @@ const allActive = async (req, res) => {
     limit = 10;
   }
 
-  const searchRecordQs = `select * from record where bool_status = true order by updated_at desc, record_id asc limit ? offset ?`;
+  const searchRecordQs = `select * from record where status = "open" order by updated_at desc, record_id asc limit ? offset ?`;
 
   const [recordResult] = await pool.query(searchRecordQs, [limit, offset]);
   mylog(recordResult);
@@ -480,7 +478,7 @@ const allActive = async (req, res) => {
     items[i] = resObj;
   }
 
-  const recordCountQs = 'select count(*) from record where bool_status = true';
+  const recordCountQs = 'select count(*) from record where status = "open"';
 
   const [recordCountResult] = await pool.query(recordCountQs);
   if (recordCountResult.length === 1) {
@@ -623,7 +621,7 @@ const mineActive = async (req, res) => {
     limit = 10;
   }
 
-  const searchRecordQs = `select * from record where created_by = ? and bool_status = true order by updated_at desc, record_id asc limit ? offset ?`;
+  const searchRecordQs = `select * from record where created_by = ? and status = "open" order by updated_at desc, record_id asc limit ? offset ?`;
 
   const [recordResult] = await pool.query(searchRecordQs, [user.user_id, limit, offset]);
   mylog(recordResult);
@@ -710,7 +708,7 @@ const mineActive = async (req, res) => {
     items[i] = resObj;
   }
 
-  const recordCountQs = 'select count(*) from record where created_by = ? and bool_status = true';
+  const recordCountQs = 'select count(*) from record where created_by = ? and status = "open"';
 
   const [recordCountResult] = await pool.query(recordCountQs, [user.user_id]);
   if (recordCountResult.length === 1) {
@@ -733,7 +731,7 @@ const updateRecord = async (req, res) => {
   const recordId = req.params.recordId;
   const status = req.body.status;
 
-    await pool.query(`update record set status = ?, bool_status = false where record_id = ?`, [
+  await pool.query(`update record set status = ? where record_id = ?`, [
     `${status}`,
     `${recordId}`,
   ]);
