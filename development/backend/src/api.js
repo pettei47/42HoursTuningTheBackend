@@ -760,7 +760,7 @@ const getComments = async (req, res) => {
   user.name as user_name,
   group_info.name as group_name
   from record_comment
-  left join group_member onrecord_comment.created_by =  group_member.user_id and group_member.is_primary = true
+  left join group_member on record_comment.created_by =  group_member.user_id and group_member.is_primary = true
   left join user on group_member.user_id = user.user_id
   left join group_info on group_member.group_id = group_info.group_id
   where linked_record_id = ? order by created_at desc`;
