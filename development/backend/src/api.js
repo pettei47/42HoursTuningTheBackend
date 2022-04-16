@@ -624,13 +624,14 @@ const mineActive = async (req, res) => {
   //const searchRecordQs = `select * from record where created_by = ? and status = "open" order by updated_at desc, record_id asc limit ? offset ?`;
   const combinedRecordQs = `select record.record_id as record_id,
   record.created_by as user_id,
-  record.application_group as application_group,
   record.updated_at as updated_at,
   user.name as user_name,
+  group_info.name as applicationGroupName,
   record_item_file.item_id as item_id,
   record_last_access.access_time as access_time
   from record 
   left join user on record.created_by = user.user_id
+  left join group_info on record.application_group = group_info.group_id
   left join record_item_file on record.record_id = record_item_file.linked_record_id order by item_id asc limit 1
   left join record_comment on record.record_id = record_comment.linked_record_id
   left join record_last_access on record.record_id = record_last_access.record_id and user.user_id = record_last_access.user_id
@@ -672,11 +673,11 @@ const mineActive = async (req, res) => {
     const createdBy = line.created_by;
     const applicationGroup = line.application_group;
     const updatedAt = line.updated_at;*/
-    let createdByName = null;
+    /*let createdByName = null;
     let applicationGroupName = null;
     let thumbNailItemId = null;
     let commentCount = 0;
-    let isUnConfirmed = true;
+    let isUnConfirmed = true;*/
 
     if (line.user_name !== null) {
       resObj.createdByName = line.user_name;
