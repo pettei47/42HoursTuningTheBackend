@@ -228,7 +228,6 @@ const allActive = async (req, res) => {
   mylog(recordResult);
 
   const items = Array(recordResult.length);
-  let count = 0;
 
   const searchUserQs = 'select name from user where user_id = ?';
   const searchGroupQs = 'select name from group_info where group_id = ?';
@@ -312,9 +311,7 @@ const allActive = async (req, res) => {
   const recordCountQs = 'select count(*) from record where status = "open"';
 
   const [recordCountResult] = await pool.query(recordCountQs);
-  if (recordCountResult.length === 1) {
-    count = recordCountResult[0]['count(*)'];
-  }
+  const count = recordCountResult.length === 1 ? recordCountResult[0]['count(*)'] : 0;
 
   res.send({ count: count, items: items });
 };
@@ -343,7 +340,6 @@ const allClosed = async (req, res) => {
   mylog(recordResult);
 
   const items = Array(recordResult.length);
-  let count = 0;
 
   const searchUserQs = 'select name from user where user_id = ?';
   const searchGroupQs = 'select name from group_info where group_id = ?';
@@ -425,11 +421,8 @@ const allClosed = async (req, res) => {
   }
 
   const recordCountQs = 'select count(*) from record where status = "closed"';
-
   const [recordCountResult] = await pool.query(recordCountQs);
-  if (recordCountResult.length === 1) {
-    count = recordCountResult[0]['count(*)'];
-  }
+  const count = recordCountResult.length === 1 ? recordCountResult[0]['count(*)'] : 0;
 
   res.send({ count: count, items: items });
 };
