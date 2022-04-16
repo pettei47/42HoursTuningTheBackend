@@ -736,7 +736,7 @@ const updateRecord = async (req, res) => {
 
     await pool.query(`update record set status = ?, bool_status = ? where record_id = ?`, [
     `${status}`,
-    `${bool_status}`,
+    bool_status,
     `${recordId}`,
   ]);
 
