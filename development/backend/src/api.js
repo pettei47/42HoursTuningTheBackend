@@ -508,7 +508,7 @@ const allClosed = async (req, res) => {
     limit = 10;
   }
 
-  const searchRecordQs = `select * from record where bool_status = false order by updated_at desc, record_id asc limit ? offset ?`;
+  const searchRecordQs = `select * from record where status = "closed" order by updated_at desc, record_id asc limit ? offset ?`;
 
   const [recordResult] = await pool.query(searchRecordQs, [limit, offset]);
   mylog(recordResult);
@@ -595,7 +595,7 @@ const allClosed = async (req, res) => {
     items[i] = resObj;
   }
 
-  const recordCountQs = 'select count(*) from record where bool_status = false';
+  const recordCountQs = 'select count(*) from record where status = "closed"';
 
   const [recordCountResult] = await pool.query(recordCountQs);
   if (recordCountResult.length === 1) {
