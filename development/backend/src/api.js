@@ -751,7 +751,6 @@ const getComments = async (req, res) => {
 
   const recordId = req.params.recordId;
 
-  //const commentQs = `select comment_id, value, created_at, created_by from record_comment where linked_record_id = ? order by created_at desc`;
   const combinedQs = `select record_comment.comment_id as comment_id,
   record_comment.value as value,
   record_comment.created_at as created_at,
@@ -769,9 +768,6 @@ const getComments = async (req, res) => {
 
   const commentList = Array(commentResult.length);
 
-  //const searchPrimaryGroupQs = `select * from group_member where user_id = ? and is_primary = true`;
-  //const searchUserQs = `select * from user where user_id = ?`;
-  //const searchGroupQs = `select * from group_info where group_id = ?`;
   for (let i = 0; i < commentResult.length; i++) {
     let commentInfo = {
       commentId: '',
@@ -783,7 +779,6 @@ const getComments = async (req, res) => {
     };
     const line = commentResult[i];
 
-    //const [primaryResult] = await pool.query(searchPrimaryGroupQs, [line.created_by]);
     if (line.group_name !== null && line.group_name !== null) {
         commentInfo.createdByPrimaryGroupName = line.group_name;
     }
