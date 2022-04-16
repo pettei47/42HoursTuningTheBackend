@@ -732,11 +732,9 @@ const updateRecord = async (req, res) => {
 
   const recordId = req.params.recordId;
   const status = req.body.status;
-  const bool_status = req.body.status === "open" ? true : false;
 
-    await pool.query(`update record set status = ?, bool_status = ? where record_id = ?`, [
+    await pool.query(`update record set status = ?, bool_status = false where record_id = ?`, [
     `${status}`,
-    bool_status,
     `${recordId}`,
   ]);
 
