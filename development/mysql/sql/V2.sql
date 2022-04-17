@@ -1,0 +1,2 @@
+ CREATE TEMPORARY TABLE tempRecord AS SELECT * FROM record
+ ALTER TABLE tempRecord DROP COLUMN detail
