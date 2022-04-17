@@ -211,7 +211,7 @@ const allActive = async (req, res) => {
     limit = 10;
   }
 
-  const searchRecordQs = `SELECT * FROM record WHERE status = "open" ORDER BY updated_at desc, record_id asc limit ? offset ?`;
+  const searchRecordQs = `SELECT * FROM tempRecord WHERE status = "open" ORDER BY updated_at desc, record_id asc limit ? offset ?`;
 
   const [recordResult] = await pool.query(searchRecordQs, [limit, offset]);
 
@@ -323,7 +323,7 @@ const allClosed = async (req, res) => {
     limit = 10;
   }
 
-  const searchRecordQs = `SELECT * FROM record WHERE status = "closed" ORDER BY updated_at desc, record_id asc limit ? offset ?`;
+  const searchRecordQs = `SELECT * FROM tempRecord WHERE status = "closed" ORDER BY updated_at desc, record_id asc limit ? offset ?`;
 
   const [recordResult] = await pool.query(searchRecordQs, [limit, offset]);
 
