@@ -143,7 +143,7 @@ const getRecord = async (req, res) => {
     files: [],
   };
 
-  const searchPrimaryGroupQs = `SELECT group_id FROM group_member WHERE user_id = ? and is_primary = true`;
+  const searchPrimaryGroupQs = `SELECT group_id FROM group_member WHERE user_id = ? AND is_primary = true`;
   const searchUserQs = `SELECT name FROM user WHERE user_id = ?`;
   const searchGroupQs = `SELECT name FROM group_info WHERE group_id = ?`;
   const searchCategoryQs = `SELECT name FROM category WHERE category_id = ?`;
@@ -257,9 +257,9 @@ const getComments = async (req, res) => {
   user.name as user_name,
   group_info.name as group_name
   FROM record_comment
-  left join group_member on record_comment.created_by =  group_member.user_id and group_member.is_primary = true
-  left join user on group_member.user_id = user.user_id
-  left join group_info on group_member.group_id = group_info.group_id
+  left join group_member ON record_comment.created_by =  group_member.user_id AND group_member.is_primary = true
+  left join user ON group_member.user_id = user.user_id
+  left join group_info ON group_member.group_id = group_info.group_id
   WHERE linked_record_id = ? ORDER BY created_at desc`;
   const [commentResult] = await pool.query(combinedQs, [`${recordId}`]);
   mylog(commentResult);
@@ -320,7 +320,7 @@ const postComments = async (req, res) => {
 
   await pool.query(
     `
-    update record set updated_at = now() WHERE record_id = ?;`,
+    UPDATE record SET updated_at = now() WHERE record_id = ?;`,
     [`${recordId}`],
   );
 
@@ -370,7 +370,7 @@ const postFiles = async (req, res) => {
   const newId = uuidv4();
   const newThumbId = uuidv4();
 
-  const binary = Buffer.FROM(base64Data, 'base64');
+  const binary = Buffer.from(base64Data, 'base64');
 
   fs.writeFileSync(`${filePath}${newId}_${name}`, binary);
 
@@ -415,11 +415,11 @@ const getRecordItemFile = async (req, res) => {
   const [rows] = await pool.query(
     `SELECT f.name, f.path FROM record_item_file r
     inner join file f
-    on
+    ON
     r.linked_record_id = ?
-    and
+    AND
     r.item_id = ?
-    and
+    AND
     r.linked_file_id = f.file_id`,
     [`${recordId}`, `${itemId}`],
   );
@@ -457,11 +457,11 @@ const getRecordItemFileThumbnail = async (req, res) => {
   const [rows] = await pool.query(
     `SELECT f.name, f.path FROM record_item_file r
     inner join file f
-    on
+    ON
     r.linked_record_id = ?
-    and
+    AND
     r.item_id = ?
-    and
+    AND
     r.linked_thumbnail_file_id = f.file_id`,
     [`${recordId}`, `${itemId}`],
   );

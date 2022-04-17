@@ -88,9 +88,9 @@ const tomeActive = async (req, res) => {
   }
 
   let searchRecordQs =
-    'SELECT * FROM record WHERE status = "open" and (category_id, application_group) in (';
+    'SELECT * FROM record WHERE status = "open" AND (category_id, application_group) in (';
   let recordCountQs =
-    'SELECT count(*) FROM record WHERE status = "open" and (category_id, application_group) in (';
+    'SELECT count(*) FROM record WHERE status = "open" AND (category_id, application_group) in (';
   const param = [];
 
   for (let i = 0; i < targetCategoryAppGroupList.length; i++) {
@@ -122,7 +122,7 @@ const tomeActive = async (req, res) => {
   const searchThumbQs =
     'SELECT * FROM record_item_file WHERE linked_record_id = ? ORDER BY item_id asc limit 1';
   const countQs = 'SELECT count(*) FROM record_comment WHERE linked_record_id = ?';
-  const searchLastQs = 'SELECT * FROM record_last_access WHERE user_id = ? and record_id = ?';
+  const searchLastQs = 'SELECT * FROM record_last_access WHERE user_id = ? AND record_id = ?';
 
   for (let i = 0; i < recordResult.length; i++) {
     const resObj = {
@@ -235,7 +235,7 @@ const allActive = async (req, res) => {
   const searchThumbQs =
     'SELECT item_id FROM record_item_file WHERE linked_record_id = ? ORDER BY item_id asc limit 1';
   const countQs = 'SELECT count(*) FROM record_comment WHERE linked_record_id = ?';
-  const searchLastQs = 'SELECT access_time FROM record_last_access WHERE user_id = ? and record_id = ?';
+  const searchLastQs = 'SELECT access_time FROM record_last_access WHERE user_id = ? AND record_id = ?';
 
   for (let i = 0; i < recordResult.length; i++) {
     const resObj = {
@@ -350,7 +350,7 @@ const allClosed = async (req, res) => {
   const searchThumbQs =
     'SELECT item_id FROM record_item_file WHERE linked_record_id = ? ORDER BY item_id asc limit 1';
   const countQs = 'SELECT count(*) FROM record_comment WHERE linked_record_id = ?';
-  const searchLastQs = 'SELECT access_time FROM record_last_access WHERE user_id = ? and record_id = ?';
+  const searchLastQs = 'SELECT access_time FROM record_last_access WHERE user_id = ? AND record_id = ?';
 
   for (let i = 0; i < recordResult.length; i++) {
     const resObj = {
@@ -452,7 +452,7 @@ const mineActive = async (req, res) => {
     limit = 10;
   }
 
-  const searchRecordQs = `SELECT * FROM record WHERE created_by = ? and status = "open" ORDER BY updated_at desc, record_id asc limit ? offset ?`;
+  const searchRecordQs = `SELECT * FROM record WHERE created_by = ? AND status = "open" ORDER BY updated_at desc, record_id asc limit ? offset ?`;
 
   const [recordResult] = await pool.query(searchRecordQs, [user.user_id, limit, offset]);
   mylog(recordResult);
@@ -465,7 +465,7 @@ const mineActive = async (req, res) => {
   const searchThumbQs =
     'SELECT * FROM record_item_file WHERE linked_record_id = ? ORDER BY item_id asc limit 1';
   const countQs = 'SELECT count(*) FROM record_comment WHERE linked_record_id = ?';
-  const searchLastQs = 'SELECT * FROM record_last_access WHERE user_id = ? and record_id = ?';
+  const searchLastQs = 'SELECT * FROM record_last_access WHERE user_id = ? AND record_id = ?';
 
   for (let i = 0; i < recordResult.length; i++) {
     const resObj = {
@@ -539,7 +539,7 @@ const mineActive = async (req, res) => {
     items[i] = resObj;
   }
 
-  const recordCountQs = 'SELECT count(*) FROM record WHERE created_by = ? and status = "open"';
+  const recordCountQs = 'SELECT count(*) FROM record WHERE created_by = ? AND status = "open"';
 
   const [recordCountResult] = await pool.query(recordCountQs, [user.user_id]);
   if (recordCountResult.length === 1) {
