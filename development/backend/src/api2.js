@@ -31,7 +31,6 @@ const mylog = (obj) => {
 
 const getLinkedUser = async (headers) => {
   const target = headers['x-app-key'];
-  mylog(target);
   const qs = `SELECT linked_user_id FROM session WHERE value = ?`;
 
   const [rows] = await pool.query(qs, [`${target}`]);
@@ -66,20 +65,15 @@ const tomeActive = async (req, res) => {
 
   const searchMyGroupQs = `SELECT * FROM group_member WHERE user_id = ?`;
   const [myGroupResult] = await pool.query(searchMyGroupQs, [user.user_id]);
-  mylog(myGroupResult);
 
   const targetCategoryAppGroupList = [];
   const searchTargetQs = `SELECT * FROM category_group WHERE group_id = ?`;
 
   for (let i = 0; i < myGroupResult.length; i++) {
     const groupId = myGroupResult[i].group_id;
-    mylog(groupId);
-
     const [targetResult] = await pool.query(searchTargetQs, [groupId]);
     for (let j = 0; j < targetResult.length; j++) {
       const targetLine = targetResult[j];
-      mylog(targetLine);
-
       targetCategoryAppGroupList.push({
         categoryId: targetLine.category_id,
         applicationGroup: targetLine.application_group,
@@ -108,11 +102,8 @@ const tomeActive = async (req, res) => {
   recordCountQs += ' )';
   param.push(limit);
   param.push(offset);
-  mylog(searchRecordQs);
-  mylog(param);
 
   const [recordResult] = await pool.query(searchRecordQs, param);
-  mylog(recordResult);
 
   const items = Array(recordResult.length);
   let count = 0;
@@ -140,7 +131,6 @@ const tomeActive = async (req, res) => {
     };
 
     const line = recordResult[i];
-    mylog(line);
     const recordId = recordResult[i].record_id;
     const createdBy = line.created_by;
     const applicationGroup = line.application_group;
@@ -173,7 +163,6 @@ const tomeActive = async (req, res) => {
 
     const [lastResult] = await pool.query(searchLastQs, [user.user_id, recordId]);
     if (lastResult.length === 1) {
-      mylog(updatedAt);
       const updatedAtNum = Date.parse(updatedAt);
       const accessTimeNum = Date.parse(lastResult[0].access_time);
       if (updatedAtNum <= accessTimeNum) {
@@ -225,7 +214,6 @@ const allActive = async (req, res) => {
   const searchRecordQs = `SELECT * FROM record WHERE status = "open" ORDER BY updated_at desc, record_id asc limit ? offset ?`;
 
   const [recordResult] = await pool.query(searchRecordQs, [limit, offset]);
-  mylog(recordResult);
 
   const items = Array(recordResult.length);
   let count = 0;
@@ -253,7 +241,6 @@ const allActive = async (req, res) => {
     };
 
     const line = recordResult[i];
-    mylog(line);
     const recordId = recordResult[i].record_id;
     const createdBy = line.created_by;
     const applicationGroup = line.application_group;
@@ -286,7 +273,6 @@ const allActive = async (req, res) => {
 
     const [lastResult] = await pool.query(searchLastQs, [user.user_id, recordId]);
     if (lastResult.length === 1) {
-      mylog(updatedAt);
       const updatedAtNum = Date.parse(updatedAt);
       const accessTimeNum = Date.parse(lastResult[0].access_time);
       if (updatedAtNum <= accessTimeNum) {
@@ -340,7 +326,6 @@ const allClosed = async (req, res) => {
   const searchRecordQs = `SELECT * FROM record WHERE status = "closed" ORDER BY updated_at desc, record_id asc limit ? offset ?`;
 
   const [recordResult] = await pool.query(searchRecordQs, [limit, offset]);
-  mylog(recordResult);
 
   const items = Array(recordResult.length);
   let count = 0;
@@ -368,7 +353,6 @@ const allClosed = async (req, res) => {
     };
 
     const line = recordResult[i];
-    mylog(line);
     const recordId = recordResult[i].record_id;
     const createdBy = line.created_by;
     const applicationGroup = line.application_group;
@@ -401,7 +385,6 @@ const allClosed = async (req, res) => {
 
     const [lastResult] = await pool.query(searchLastQs, [user.user_id, recordId]);
     if (lastResult.length === 1) {
-      mylog(updatedAt);
       const updatedAtNum = Date.parse(updatedAt);
       const accessTimeNum = Date.parse(lastResult[0].access_time);
       if (updatedAtNum <= accessTimeNum) {
@@ -455,7 +438,6 @@ const mineActive = async (req, res) => {
   const searchRecordQs = `SELECT * FROM record WHERE created_by = ? AND status = "open" ORDER BY updated_at desc, record_id asc limit ? offset ?`;
 
   const [recordResult] = await pool.query(searchRecordQs, [user.user_id, limit, offset]);
-  mylog(recordResult);
 
   const items = Array(recordResult.length);
   let count = 0;
@@ -483,7 +465,6 @@ const mineActive = async (req, res) => {
     };
 
     const line = recordResult[i];
-    mylog(line);
     const recordId = recordResult[i].record_id;
     const createdBy = line.created_by;
     const applicationGroup = line.application_group;
@@ -516,7 +497,6 @@ const mineActive = async (req, res) => {
 
     const [lastResult] = await pool.query(searchLastQs, [user.user_id, recordId]);
     if (lastResult.length === 1) {
-      mylog(updatedAt);
       const updatedAtNum = Date.parse(updatedAt);
       const accessTimeNum = Date.parse(lastResult[0].access_time);
       if (updatedAtNum <= accessTimeNum) {

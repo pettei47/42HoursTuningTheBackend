@@ -31,7 +31,6 @@ const mylog = (obj) => {
 
 const getLinkedUser = async (headers) => {
   const target = headers['x-app-key'];
-  mylog(target);
   const qs = `SELECT linked_user_id FROM session WHERE value = ?`;
 
   const [rows] = await pool.query(qs, [`${target}`]);
@@ -56,10 +55,7 @@ const postRecords = async (req, res) => {
     return;
   }
 
-  mylog(user);
-
   const body = req.body;
-  mylog(body);
 
   let [rows] = await pool.query(
     `SELECT group_id FROM group_member WHERE user_id = ?
@@ -74,9 +70,6 @@ const postRecords = async (req, res) => {
   }
 
   const userPrimary = rows[0];
-
-  mylog(userPrimary);
-
   const newId = uuidv4();
 
   await pool.query(
@@ -116,11 +109,8 @@ const getRecord = async (req, res) => {
   }
 
   const recordId = req.params.recordId;
-
   const recordQs = `SELECT * FROM record WHERE record_id = ?`;
-
   const [recordResult] = await pool.query(recordQs, [`${recordId}`]);
-  mylog(recordResult);
 
   if (recordResult.length !== 1) {
     res.status(404).send({});
@@ -186,8 +176,6 @@ const getRecord = async (req, res) => {
 
   const searchItemQs = `SELECT linked_file_id,item_id FROM record_item_file WHERE linked_record_id = ? ORDER BY item_id asc`;
   const [itemResult] = await pool.query(searchItemQs, [line.record_id]);
-  mylog('itemResult');
-  mylog(itemResult);
 
   const searchFileQs = `SELECT name FROM file WHERE file_id = ?`;
   for (let i = 0; i < itemResult.length; i++) {
@@ -262,8 +250,6 @@ const getComments = async (req, res) => {
   left join group_info ON group_member.group_id = group_info.group_id
   WHERE linked_record_id = ? ORDER BY created_at desc`;
   const [commentResult] = await pool.query(combinedQs, [`${recordId}`]);
-  mylog(commentResult);
-
   const commentList = Array(commentResult.length);
 
   for (let i = 0; i < commentResult.length; i++) {
@@ -288,10 +274,6 @@ const getComments = async (req, res) => {
     commentInfo.createdBy = line.user_id;
     commentInfo.createdAt = line.created_at;
     commentList[i] = commentInfo;
-  }
-
-  for (const row of commentList) {
-    mylog(row);
   }
 
   res.send({ items: commentList });
@@ -338,11 +320,6 @@ const getCategories = async (req, res) => {
   }
 
   const [rows] = await pool.query(`SELECT * FROM category`);
-
-  for (const row of rows) {
-    mylog(row);
-  }
-
   const items = {};
 
   for (let i = 0; i < rows.length; i++) {
@@ -363,8 +340,6 @@ const postFiles = async (req, res) => {
   }
 
   const base64Data = req.body.data;
-  mylog(base64Data);
-
   const name = req.body.name;
 
   const newId = uuidv4();
@@ -375,8 +350,6 @@ const postFiles = async (req, res) => {
   fs.writeFileSync(`${filePath}${newId}_${name}`, binary);
 
   const image = await jimp.read(fs.readFileSync(`${filePath}${newId}_${name}`));
-  mylog(image.bitmap.width);
-  mylog(image.bitmap.height);
 
   const size = image.bitmap.width < image.bitmap.height ? image.bitmap.width : image.bitmap.height;
   await image.cover(size, size);
@@ -408,9 +381,7 @@ const getRecordItemFile = async (req, res) => {
   }
 
   const recordId = req.params.recordId;
-  mylog(recordId);
   const itemId = Number(req.params.itemId);
-  mylog(itemId);
 
   const [rows] = await pool.query(
     `SELECT f.name, f.path FROM record_item_file r
@@ -428,13 +399,11 @@ const getRecordItemFile = async (req, res) => {
     res.status(404).send({});
     return;
   }
-  mylog(rows[0]);
 
   const fileInfo = rows[0];
 
   const data = fs.readFileSync(fileInfo.path);
   const base64 = data.toString('base64');
-  mylog(base64);
 
   res.send({ data: base64, name: fileInfo.name });
 };
@@ -450,9 +419,7 @@ const getRecordItemFileThumbnail = async (req, res) => {
   }
 
   const recordId = req.params.recordId;
-  mylog(recordId);
   const itemId = Number(req.params.itemId);
-  mylog(itemId);
 
   const [rows] = await pool.query(
     `SELECT f.name, f.path FROM record_item_file r
@@ -470,13 +437,11 @@ const getRecordItemFileThumbnail = async (req, res) => {
     res.status(404).send({});
     return;
   }
-  mylog(rows[0]);
 
   const fileInfo = rows[0];
 
   const data = fs.readFileSync(fileInfo.path);
   const base64 = data.toString('base64');
-  mylog(base64);
 
   res.send({ data: base64, name: fileInfo.name });
 };
