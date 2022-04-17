@@ -29,16 +29,9 @@ const mylog = (obj) => {
   console.log(obj);
 };
 
-const arrayLinkedUser =  new Map();
-
 const getLinkedUser = async (headers) => {
   const target = headers['x-app-key'];
   mylog(target);
-
-  if (arrayLinkedUser.has(target)) {
-    return {user_id:  arrayLinkedUser.get(target)};
-  }
-
   const qs = `select linked_user_id from session where value = ?`;
 
   const [rows] = await pool.query(qs, [`${target}`]);
@@ -47,7 +40,7 @@ const getLinkedUser = async (headers) => {
     mylog('セッションが見つかりませんでした。');
     return undefined;
   }
-  arrayLinkedUser.set(target, rows[0].linked_user_id );
+
   return { user_id: rows[0].linked_user_id };
 };
 
