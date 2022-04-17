@@ -80,7 +80,7 @@ const postRecords = async (req, res) => {
   const newId = uuidv4();
 
   await pool.query(
-    `insert into record
+    `INSERT INTO record
     (record_id, status, title, detail, category_id, application_group, created_by, created_at, updated_at)
     values (?, "open", ?, ?, ?, ?, ?, now(), now())`,
     [
@@ -95,7 +95,7 @@ const postRecords = async (req, res) => {
 
   for (const e of body.fileIdList) {
     await pool.query(
-      `insert into record_item_file
+      `INSERT INTO record_item_file
         (linked_record_id, linked_file_id, linked_thumbnail_file_id, created_at)
         values (?, ?, ?, now())`,
       [`${newId}`, `${e.fileId}`, `${e.thumbFileId}`],
@@ -312,7 +312,7 @@ const postComments = async (req, res) => {
 
   await pool.query(
     `
-    insert into record_comment
+    INSERT INTO record_comment
     (linked_record_id, value, created_by, created_at)
     values (?,?,?, now());`,
     [`${recordId}`, `${value}`, user.user_id],
@@ -384,12 +384,12 @@ const postFiles = async (req, res) => {
   await image.writeAsync(`${filePath}${newThumbId}_thumb_${name}`);
 
   await pool.query(
-    `insert into file (file_id, path, name)
+    `INSERT INTO file (file_id, path, name)
         values (?, ?, ?)`,
     [`${newId}`, `${filePath}${newId}_${name}`, `${name}`],
   );
   await pool.query(
-    `insert into file (file_id, path, name)
+    `INSERT INTO file (file_id, path, name)
         values (?, ?, ?)`,
     [`${newThumbId}`, `${filePath}${newThumbId}_thumb_${name}`, `thumb_${name}`],
   );
